@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		
+		<title>Shairport OS</title>
+		
+		<link href="layout.css" rel="stylesheet" type="text/css" media="screen">
+
+		<script src="jquery-1.11.1.min.js"></script>
+		
+		<script>
+
+			$.ajaxSetup ({
+			    error: function(x, e) {
+                if (x.status == 404) {
+					$("#title").fadeOut(1000);
+					$("#artist_container").fadeOut(1000);
+					$("#album").fadeOut(1000);
+					$("#artwork").fadeOut(2000);
+					$("#background").fadeOut(3000);
+					return;
+                } 
+            }
+			});
+			
+			$(function() {
+			    setInterval(function() {
+					refreshDetails();			
+				}, 4000);
+			});
+			
+			function refreshDetails() {
+				
+				$.get('shairport-sync/ready', function(data) {
+
+					if (data != $('#ready').text()) {
+
+						$("#ready").text(data);
+
+						$.get('shairport-sync/title', function(data) {
+							
+							if (data != $('#title').text()) {
+								
+								var titleInitialColour = $('#title').css("color");
+								$("#title").css('color', 'transparent');
+								
+								var titleInitialHeight = $('#title').height();
+								console.log("Initial: " + titleInitialHeight);
+
+								
+								$("#title").text(data);
+								
+								var titleFinalHeight = $('#title').css({'height': 'auto'}).height();
+								console.log("Final: " + titleFinalHeight);
+
+
+								$('#title').css({'height': titleInitialHeight});
+								$('#title').animate({'height': titleFinalHeight}, 1000, function() {
+									$('#title').hide().css({'color': titleInitialColour}).fadeIn(200);
+								});
+														
+								$.get('shairport-sync/album', function(data) {
+							
+									if (data != $('#album').text()) {
+										
+										$("#album").hide().text(data).fadeIn(1000);
+										$("#artist_container").hide().fadeIn(500);
+										$("#artist").hide().load("shairport-sync/artist").fadeIn(500);
+										$("#artwork").hide().css('background-image', 'url(shairport-sync/artwork)').fadeIn(2000);
+										$("#background").hide().css('background-image', 'url(shairport-sync/artwork_blur.jpg)').fadeIn(5000);
+										
+									} else {
+										
+										$("#album").text(data).show();
+										$("#artist_container").show();
+										$("#artist").load("shairport-sync/artist").show();
+										$("#artwork").css('background-image', 'url(shairport-sync/artwork)').show();
+										$("#background").css('background-image', 'url(shairport-sync/artwork_blur.jpg)').show();
+										
+									}
+									
+								});
+											
+							}
+							
+						});
+					}
+
+				});
+												
+			}
+			
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="content">
+			
+			<div id="ready"></div>
+
+			<div id="background"></div>
+			<div id="artwork_container"><div id="artwork"></div></div>
+			
+			<div id="text_content">
+				<div id="title"></div>
+				<div id="artist_container"><div id="artist"></div></div>
+				<div id="album"></div>
+			</div>
+			
+		</div>
+						
+	</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

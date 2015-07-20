@@ -1,0 +1,87 @@
+
+/* 
+	
+	Shairport OS : layout.css v1.00 (20th July 2015) by Andy Davison
+		
+ */
+
+body {
+	margin: 0;
+	background-color: white;
+	overflow: hidden;
+}
+
+img {
+	border: none;
+}
+
+#content {
+	position: absolute;
+	z-index: 1;
+	background-color: black;
+	width: 800px;
+	height: 480px;
+	color: #eee;
+	font-family: sans-serif;
+	overflow: hidden;
+}
+
+#background {
+	display: none;
+	position: absolute;
+	width: 800px;
+	height: 480px;
+	z-index: -10;
+	background-size: 100% 100%;
+}
+
+#artwork_container {
+	float: left;
+	width: 400px;
+	height: 400px;
+	margin: 40px 35px 35px 35px;
+	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.35);
+	background-color: black;
+}
+
+#artwork {
+	display: none;
+	width: 400px;
+	height: 400px;
+	background-size: 100% 100%;
+}
+
+
+#text_content {
+	padding-top: 100px;
+}
+
+#title {
+	overflow: visible;
+	font-size: 2.1em;
+	padding-right: 40px;
+}
+
+#artist_container {
+	display: none;
+	z-index: -1;
+	position: relative;
+	font-size: 1.3em;
+	padding: 10px 40px 10px 0;
+	background-color: #fff;
+	margin: 20px 0;
+	color: black;
+	font-weight: bold;
+	opacity: .7;
+}
+
+#artist {
+	display: none;
+}
+
+#album {
+	display: none;
+	font-size: 1.1em;
+	margin-bottom: 20px;
+	padding-right: 40px;
+}
