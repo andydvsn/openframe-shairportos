@@ -1,0 +1,42 @@
+#!/bin/bash
+
+## shairport-sync-monitor v1.03 (20th July 2015) by Andy Davison
+##  Watches the output of shairport-sync-metadata-reader and does stuff.
+
+CURRENTIMAGE=""
+
+while true ; do
+
+	if [ -e /tmp/shairport-sync/title ]; then
+
+		ofscreen on
+
+		READY=`md5sum /tmp/shairport-sync/title | awk '{print $1}'`
+
+		[ -e /tmp/shairport-sync/image ] || cp /usr/local/share/images/shairport-missing-artwork /tmp/shairport-sync/image
+
+		CHECKIMAGE=`md5sum /tmp/shairport-sync/image | awk '{print $1}'`
+
+		if [ "$CURRENTIMAGE" != "$CHECKIMAGE" ]; then
+			base64 -d /tmp/shairport-sync/image > /tmp/shairport-sync/artwork
+			convert /tmp/shairport-sync/artwork -resize 25% -brightness-contrast -30x-30 -blur 8x8 -resize 400% /tmp/shairport-sync/artwork_blur.jpg
+			CURRENTIMAGE="$CHECKIMAGE"
+		fi
+
+		sync
+		sleep 1
+		echo -n "$READY" > /tmp/shairport-sync/status
+
+	else
+
+		CURRENTIMAGE=""
+		# The content of this echo command must match the initial value in the web page.
+		echo -n "no stream" > /tmp/shairport-sync/status
+		rm /tmp/shairport-sync/artwork* &>/dev/null
+		ofscreen off
+
+	fi
+
+	sleep 8
+
+done

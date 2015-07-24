@@ -1,7 +1,7 @@
 
 /* 
 	
-	Shairport OS : layout.css v1.00 (20th July 2015) by Andy Davison
+	Shairport OS : layout.css v1.02 (22nd July 2015) by Andy Davison
 		
  */
 
@@ -13,6 +13,11 @@ body {
 
 img {
 	border: none;
+}
+
+#status {
+	position: absolute;
+	display: none;
 }
 
 #content {
@@ -35,31 +40,32 @@ img {
 	background-size: 100% 100%;
 }
 
-#artwork_container {
+#artwork_shadow {
 	float: left;
 	width: 400px;
 	height: 400px;
 	margin: 40px 35px 35px 35px;
 	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.35);
-	background-color: black;
 }
 
 #artwork {
+	position: absolute;
 	display: none;
 	width: 400px;
 	height: 400px;
-	background-size: 100% 100%;
+	margin: 40px 0 0 35px;
+	background-size: 100%;
 }
 
-
 #text_content {
-	padding-top: 100px;
+	width: 330px;
+	float: right;
 }
 
 #title {
-	overflow: visible;
 	font-size: 2.1em;
 	padding-right: 40px;
+	word-wrap: break-word;
 }
 
 #artist_container {
@@ -67,21 +73,23 @@ img {
 	z-index: -1;
 	position: relative;
 	font-size: 1.3em;
-	padding: 10px 40px 10px 0;
+	padding: 10px 40px 10px 470px;
+	min-height: 25px;
 	background-color: #fff;
-	margin: 20px 0;
+	margin: 20px 0 20px -470px;
 	color: black;
 	font-weight: bold;
-	opacity: .7;
+	opacity: .7em;
 }
 
 #artist {
 	display: none;
+	min-height: 25px;
 }
 
 #album {
 	display: none;
 	font-size: 1.1em;
-	margin-bottom: 20px;
+	margin: 20px 0 20px 0;
 	padding-right: 40px;
 }

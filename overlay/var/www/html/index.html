@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	
+	<!--
+		
+		Shairport OS : index.html v1.02 (22nd July 2015) by Andy Davison
+	
+	-->
+	
+	<head>
+		
+		<title>Shairport</title>
+		
+		<link href="layout.css" rel="stylesheet" type="text/css" media="screen">
+
+		<script src="jquery-1.11.1.min.js"></script>
+		
+		<script>
+
+			$.ajaxSetup ({
+			    error: function(x, e) {
+	                if (x.status == 404) {
+						$("#title").fadeTo(500,0);
+						$("#artist_container").fadeTo(500,0);
+						$("#album").fadeTo(500,0);
+						$("#artwork").fadeTo(2500,0);
+						$("#artwork_shadow").fadeTo(1000,0);
+						$("#background").fadeTo(3500,0);
+						return;
+	                } 
+	            }
+			});
+			
+			$(function() {
+			    setInterval(function() {
+					refreshDetails();			
+				}, 2000);
+			});
+			
+			function refreshDetails() {
+				
+				$.get('shairport-sync/status', function(data) {
+
+					if (data != $('#status').text()) {
+
+						$("#status").text(data);
+
+						$.get('shairport-sync/title', function(data) {
+															
+							// Perform a little jiggery-pokery to determine the right height for a long title.
+															
+							var titleInitialColour = $('#title').css("color");
+							$("#title").css('color', 'transparent');
+							
+							var titleInitialHeight = $('#title').height();
+							console.log("Initial: " + titleInitialHeight);
+							
+							$("#title").text(data);
+							
+							var titleFinalHeight = $('#title').css({'height': 'auto'}).height();
+							console.log("Final: " + titleFinalHeight);
+							
+							$("#text_content").css({'padding-top': 150-(titleFinalHeight/2)});
+
+							$('#title').css({'height': titleInitialHeight});
+							$('#title').animate({'height': titleFinalHeight}, 1000, function() {
+								$('#title').hide().css({'color': titleInitialColour}).fadeTo(200,1);
+							});
+													
+							$.get('shairport-sync/album', function(data) {
+						
+								if (data != $('#album').text()) {
+									
+									$("#album").hide().text(data).fadeTo(2000,1);
+									$("#artist_container").hide().fadeTo(2000,.6);
+									$("#artist").hide().load("shairport-sync/artist").fadeTo(2000,1);
+									$("#artwork_shadow").hide().fadeTo(2500,1);
+									$("#artwork").hide().css('background-image', 'url(shairport-sync/artwork)').fadeTo(500,1);
+									$("#background").hide().css('background-image', 'url(shairport-sync/artwork_blur.jpg)').fadeTo(5000,1);
+									
+								} else {
+									
+									$("#album").text(data).fadeTo(2000,1);
+									$("#artist_container").fadeTo(2000,.6);
+									$("#artist").load("shairport-sync/artist").fadeTo(500,1);
+									$("#artwork_shadow").fadeTo(2500,1);
+									$("#artwork").css('background-image', 'url(shairport-sync/artwork)').fadeTo(500,1);
+									$("#background").css('background-image', 'url(shairport-sync/artwork_blur.jpg)').fadeTo(5000,1);
+									
+								}
+								
+							});
+																		
+						});
+					}
+
+				});
+												
+			}
+			
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="content">
+			
+			<div id="status">no stream</div>
+
+			<div id="background"></div>
+			
+			<div id="artwork_shadow"></div>
+			<div id="artwork"></div>
+			
+			<div id="text_content">
+				<div id="title"></div>
+				<div id="artist_container"><div id="artist"></div></div>
+				<div id="album"></div>
+			</div>
+			
+		</div>
+						
+	</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

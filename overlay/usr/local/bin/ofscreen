@@ -1,0 +1,44 @@
+#!/bin/bash
+
+## ofscreen v1.03 (21st July 2015) by Andy Davison
+##  Turns the display on or off after a given number of seconds
+
+if [ -e /tmp/ofscreen_on ] && [ -e /tmp/ofscreen_off ]; then
+	rm /tmp/ofscreen_on /tmp/ofscreen_off
+fi
+
+if [ "$1" = "on" ]; then
+
+	[ -e /tmp/ofscreen_on ] && exit 0
+        [ -e /tmp/ofscreen_off ] && rm /tmp/ofscreen_off
+        touch /tmp/ofscreen_on
+	xset -display :0.0 dpms 0 0 0
+	xset -display :0.0 dpms force on
+	xset -display :0.0 s reset
+
+elif [ "$1" = "off" ]; then
+
+	[ -e /tmp/ofscreen_off ] && exit 0
+
+	# No on or off marker means we've just booted. Mark to give us a minute.
+	if [ ! -e /tmp/ofscreen_on ] && [ ! -e /tmp/ofscreen_off ]; then
+		touch /tmp/ofscreen_on
+	fi
+
+	# If the display was powered on in the last two minutes, don't turn it off.
+	if [ -e /tmp/ofscreen_on ]; then
+		[ `find /tmp/ofscreen_on -mmin +2` ] || exit 0
+	fi
+
+        [ -e /tmp/ofscreen_on ] && rm /tmp/ofscreen_on
+        touch /tmp/ofscreen_off
+	xset -display :0.0 dpms force off
+
+else
+
+	echo "Usage: $0 <on|off> [delay]"
+	exit 1
+
+fi
+
+exit 0

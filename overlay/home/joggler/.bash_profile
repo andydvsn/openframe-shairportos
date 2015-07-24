@@ -1,3 +1,3 @@
 if [ $(tty) = /dev/tty1 ]; then
-  xinit
+  xinit -- -nocursor &>/dev/null
 fi
